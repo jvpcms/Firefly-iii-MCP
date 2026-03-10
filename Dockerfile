@@ -2,7 +2,7 @@ FROM python:3.12.9-slim-bookworm AS base
 
 FROM base AS builder
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+RUN pip install uv
 WORKDIR /app
 
 ENV PYTHONBUFFERED=1 \
@@ -11,13 +11,11 @@ ENV PYTHONBUFFERED=1 \
     UV_PYTHON=python3.12
 
 COPY uv.lock pyproject.toml ./
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-install-project --no-dev
+RUN uv sync --frozen --no-install-project --no-dev
 
 COPY . .
 
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --frozen --no-dev
+RUN uv sync --frozen --no-dev
 
 FROM base AS runtime
 # Copy the environment, but not the source code
