@@ -1,9 +1,8 @@
 from typing import Any
-from pathlib import Path
 import yaml
 import re as _re
 
-_SPEC_PATH = Path(__file__).parent.parent.parent / "firefly-iii-openapi.yaml"
+_SPEC_PATH =  "./firefly-iii-openapi.yaml"
 
 
 def load_openapi_spec() -> dict[str, Any]:

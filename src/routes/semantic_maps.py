@@ -1,4 +1,4 @@
-from fastmcp.experimental.server.openapi import RouteMap, MCPType
+from fastmcp.server.providers.openapi import RouteMap, MCPType
 
 semantic_maps = [
     RouteMap(methods="*", pattern=r"^/v1/about.*", mcp_type=MCPType.EXCLUDE),

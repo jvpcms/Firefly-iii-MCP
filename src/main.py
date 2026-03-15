@@ -1,16 +1,15 @@
-import os
 import httpx
-from dotenv import load_dotenv
 from fastmcp import FastMCP
 
+from config import env_config
 from routes import semantic_maps, register_custom_routes
 from spec import load_openapi_spec
-
-load_dotenv()
+from response_handler import InterceptingTransport
 
 client = httpx.AsyncClient(
-    base_url=os.environ["FIREFLY_III_URL"],
-    headers={"Authorization": "Bearer " + os.environ["FIREFLY_III_ACCESS_TOKEN"]},
+    base_url=env_config.firefly_iii_url,
+    headers={"Authorization": "Bearer " + env_config.firefly_iii_access_token},
+    transport=InterceptingTransport(httpx.AsyncHTTPTransport()),
 )
 
 openapi_spec = load_openapi_spec()
