@@ -1,8 +1,18 @@
+import json
+import os
 from fastmcp import FastMCP
 from starlette.responses import JSONResponse
+from config import env_config
 
 def register_custom_routes(mcp: FastMCP):
     """ Register custom routes to a mcp instance"""
+
+    @mcp.tool()
+    def load_tool_data(data_id: str) -> dict:
+        """Load the full JSON response for a previous tool call by its data_id."""
+        file_path = os.path.join(env_config.tool_data_path, f"{data_id}.json")
+        with open(file_path, "r") as f:
+            return json.load(f)
 
     @mcp.custom_route("/health", methods=["GET"])
     async def health_check(request):
